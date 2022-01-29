@@ -1,0 +1,9 @@
+doctrine:
+    orm:
+        mappings:
+            SearchBundle:
+                is_bundle: true
+                type: annotation
+                dir: 'src/Entity'
+                prefix: 'ICS\SearchBundle\Entity'
+                alias: Search

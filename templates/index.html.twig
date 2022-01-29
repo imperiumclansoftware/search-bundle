@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+{% trans_default_domain('search') %}
+{% block body %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12 col-md-6 offset-md-3 mt-3">
+				<h1 class="text-center mb-3">
+					<i class="fa fa-search"></i>
+					{{ "Search"|trans }}</h1>
+				<form method="POST" action="{{ path('ics-search-homepage') }}">
+					<div class="input-group mt-3">
+						<div class="input-group-text">
+							{{ "Search limit"|trans }}
+						</div>
+						<select class="form-select" name="selectedClass">
+							<option value="0" {% if selectClass==0 %}selected{% endif %}>{{ "All entities"|trans }}</option>
+							{% for classe in classes %}
+								<option value="{{ classe }}" {% if selectClass == classe %}selected{% endif %}>{{ classe|SearchEntityClearName|trans }}</option>
+							{% endfor %}
+						</select>
+						<input type="search" class="form-control" name="search" value="{{ search }}" placeholder="{{ "Search on full site"|trans }}"/>
+						
+							<button type="submit" class="btn btn-success">
+								<i class="fa fa-search"></i>
+								{{ "Search"|trans }}</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			{% for result in results %}
+				{% if result.enabledRoles|length <= 0 or is_granted(result.enabledRoles) %}
+					<div class="col-12 col-md-4">
+						<div class="card my-3">
+							<h3 class="card-header">{{ result.entityClearName|trans }}</h3>
+							<div class="card-body">
+								{% for res in result.results %}
+									{% include result.twigTemplate with { result: res, search: search } %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

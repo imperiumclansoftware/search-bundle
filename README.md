@@ -111,7 +111,6 @@ class UserRepository extends ServiceEntityRepository implements EntitySearchRepo
             ->orderBy('u.name', 'ASC')
             ->getQuery()
             ->getResult();
-            dump($results);
         return new ArrayCollection($results);
     }
   
